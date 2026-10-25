@@ -1,0 +1,127 @@
+#include <stdio.h>
+
+#define STUDENT_COUNT 5
+
+struct student {
+    int stu_no;
+    char name[20];
+    float marks;
+};
+
+struct student stu[STUDENT_COUNT];
+
+void create(void) {
+    for (int i = 0; i < STUDENT_COUNT; i++) {
+        printf("Enter student number, name, and marks: ");
+
+        if (scanf("%d %19s %f",
+                  &stu[i].stu_no,
+                  stu[i].name,
+                  &stu[i].marks) != 3) {
+            printf("Invalid input.\n");
+            return;
+        }
+    }
+}
+
+void display(void) {
+    printf("\nStudent No\tName\tMarks\n");
+
+    for (int i = 0; i < STUDENT_COUNT; i++) {
+        printf("%d\t\t%s\t%.2f\n",
+               stu[i].stu_no,
+               stu[i].name,
+               stu[i].marks);
+    }
+}
+
+void modify(void) {
+    int no;
+
+    printf("Enter student number to modify: ");
+    if (scanf("%d", &no) != 1) {
+        printf("Invalid input.\n");
+        return;
+    }
+
+    for (int i = 0; i < STUDENT_COUNT; i++) {
+        if (stu[i].stu_no == no) {
+            printf("Enter new name and marks: ");
+
+            if (scanf("%19s %f", stu[i].name, &stu[i].marks) != 2) {
+                printf("Invalid input.\n");
+                return;
+            }
+
+            printf("Record updated.\n");
+            return;
+        }
+    }
+
+    printf("Student not found.\n");
+}
+
+void search(void) {
+    int no;
+
+    printf("Enter student number to search: ");
+    if (scanf("%d", &no) != 1) {
+        printf("Invalid input.\n");
+        return;
+    }
+
+    for (int i = 0; i < STUDENT_COUNT; i++) {
+        if (stu[i].stu_no == no) {
+            printf("Found: %d\t%s\t%.2f\n",
+                   stu[i].stu_no,
+                   stu[i].name,
+                   stu[i].marks);
+            return;
+        }
+    }
+
+    printf("Student not found.\n");
+}
+
+void sort(void) {
+    struct student temp;
+
+    for (int i = 0; i < STUDENT_COUNT - 1; i++) {
+        for (int j = 0; j < STUDENT_COUNT - 1 - i; j++) {
+            if (stu[j].stu_no > stu[j + 1].stu_no) {
+                temp = stu[j];
+                stu[j] = stu[j + 1];
+                stu[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("Sorted by student number.\n");
+}
+
+int main(void) {
+    int choice;
+
+    do {
+        printf("\n1. Create  2. Display  3. Modify  "
+               "4. Search  5. Sort  6. Exit\n");
+        printf("Enter choice: ");
+
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input.\n");
+            return 1;
+        }
+
+        switch (choice) {
+            case 1: create(); break;
+            case 2: display(); break;
+            case 3: modify(); break;
+            case 4: search(); break;
+            case 5: sort(); break;
+            case 6: printf("Exiting...\n"); break;
+            default: printf("Invalid choice.\n");
+        }
+    } while (choice != 6);
+
+    return 0;
+}
